@@ -1,3 +1,4 @@
 Celsius = float(input("Enter you Celsius:"))
 fahrenheit = (9/5)*Celsius + 32 
 print(f"the {Celsius} Celsius={fahrenheit} Fahrenheit")
+int(input("enter"))
