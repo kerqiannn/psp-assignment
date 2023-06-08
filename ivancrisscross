@@ -1,0 +1,42 @@
+import random
+from utils import *
+
+# ----Things to remember----
+# in array: array[rows][colums]
+
+def main():
+    while True:
+        instructions_1()
+        rows = int(input("Enter the rows: "))
+        cols = int(input("Enter the columns: "))
+        cc_arr = [[0 for i in range(cols)] for j in range(rows)]
+        gen_arr(cc_arr, rows, cols)
+        print_arr(cc_arr, cols)
+        score_init(0, 0)
+        instructions_2()
+        fixed_row_or_column, s1, s2 = game_init(cc_arr, rows, cols)
+        turn = 2
+        while True:
+            if check_column(cc_arr) == True or check_row(cc_arr, 0, 'False') == True:
+                break
+            fixed_row_or_column, next_p, s1, s2 = game_start(cc_arr, turn, fixed_row_or_column, s1, s2, cols)
+            print_arr(cc_arr, cols)
+            print_score(s1, s2)
+            if next_p < 0:
+                turn += 1
+        if s1 > s2:
+            print("Your game has successfully ended")
+            print("Player A has won")
+        elif s2 > s1:
+            print("Your game has successfully ended")
+            print("Player B has won")
+        restart_game1 = str(input("Do you want to continue? (Y/N): "))
+        if restart_game1 == 'Y' or 'y': #restart game
+            pass
+        if restart_game1 == 'N' or 'n':
+            print('-' * len("Thank you for playing"))
+            print("Thank you for playing")
+            print('-' * len("Thank you for playing"))
+            break
+    
+main()
