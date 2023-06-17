@@ -1,31 +1,73 @@
-from tabulate import tabulate
 import random
 
-def generate_random_table(size):
-    table_data = []
-    for _ in range(size):
-        row = [random.randint(-30, 30 ) for _ in range(size)]
-        table_data.append(row)
+def display_instructions():
+    print('1) You have to enter the size of the grid between 2-8.')
+    print('   For example, if the size of the grid is 3:')
+    print('2) It will auto-generate a 3x3 grid with 9 random numbers in it.')
+    print('3) Below the grid, it will show the initial scores of two players.')
+    print('4) The first player will randomly select a number from a row and column.')
+    print('5) The chosen number will be added to the scores.')
+    print('6) After selecting the numbers, the selected box will turn into either X or blank.')
+    print('7) For now, the second player will select a random number only in the same column as the previous player.')
+    print('8) The chosen number will be added to the second player\'s scores.')
+    print('9) Now, back to the first player, you can only choose the number in the same row as the previous selected number by the second player.')
+    print('10) This game alternates between column and row selection.')
+    print('11) The game will end if any row or column is fully taken.')
+    print('12) The person with the highest score will win the game!')
 
-    column_headers = [f"Column {col}" for col in range(1, size + 1)]
-    row_headers = [f"Row {row}" for row in range(1, size + 1)]
+def display_scores(player1_name, player1_score, player2_name, player2_score):
+    print(f"{player1_name}'s Score: {player1_score}")
+    print(f"{player2_name}'s Score: {player2_score}")
 
-    table = tabulate(table_data, headers=column_headers, showindex=row_headers, tablefmt="grid")
+def start_game():
+    instruction = input('Do you need instructions? Y / N: ')
 
-    return table
+    if instruction == 'Y':
+        display_instructions()
 
-def main():
-    input_correct = False
+    question = input('Do you want to start the game? Y / N: ')
 
-    while not input_correct:
-        size = int(input("Enter the size of the game board (2 to 8): "))
-        if size >= 2 and size <= 8:
-            input_correct = True
-        else:
-            print("Wrong input, please re-enter.")
+    if question == 'Y':
+        grid_size = int(input('Enter the grid size you want (2-8): '))
 
-    random_table = generate_random_table(size)
-    print(random_table)
-    print(f"{'Player 1 :':<15} {'Player 2 :'}")
+        grid = [[' ' for _ in range(grid_size)] for _ in range(grid_size)]
 
-main()
+        for row in range(grid_size):
+            for col in range(grid_size):
+                grid[row][col] = str(random.randint(-30, 30))
+
+        # Initialize scores for Player 1 and Player 2
+        player1_score = 0
+        player2_score = 0
+
+        # Get names of Player 1 and Player 2
+        player1_name = input("Enter name for Player 1: ")
+        player2_name = input("Enter name for Player 2: ")
+
+        for row in grid:
+            print('+------' * (grid_size + 1) + '+')
+            print('|      ', end='')
+            for cell in row:
+                print(f'| {cell:^4}', end=' ')
+            print('|')
+
+        print('+------' * (grid_size + 1) + '+')
+
+        # Display player names and initial scores
+        display_scores(player1_name, player1_score, player2_name, player2_score)
+
+        while True:
+            # Player 1's turn
+            row_choice = int(input(f"{player1_name}, choose a row: "))
+            col_choice = int(input(f"{player1_name}, choose a column: "))
+
+            # Update score and mark selected cell with 'X'
+            player1_score += int(grid[row_choice - 1][col_choice - 1])
+            grid[row_choice - 1][col_choice - 1] = 'X'
+
+            # Display the updated grid
+            for row in grid:
+                print('+------' * (grid_size + 1) + '+')
+                print('|      ', end='')
+                for cell in row:
+                    print
