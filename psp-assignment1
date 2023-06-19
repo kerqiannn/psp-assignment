@@ -22,13 +22,13 @@ def display_scores(player1_name, player1_score, player2_name, player2_score):
 def start_game():
     instruction = input('Do you need instructions? Y / N: ')
 
-    if instruction == 'Y':
+    if instruction.lower() == 'y':
         display_instructions()
 
     question = input('Do you want to start the game? Y / N: ')
 
-    if question == 'Y':
-        grid_size = int(input('Enter the grid size you want (2-8): '))
+    if question.lower() == 'y':
+        grid_size = int(input('Enter the grid size you want: '))
 
         grid = [[' ' for i in range(grid_size)] for i in range(grid_size)]
 
@@ -62,4 +62,3 @@ def start_game():
 
 # Start the game
 start_game()
-
