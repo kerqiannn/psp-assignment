@@ -27,13 +27,97 @@ def get_valid_input(message, options):
         else:
             print('Invalid input. Please enter Y or N.')
 
+def mark_number(grid, row, column):
+    number = grid[row][column]
+    if number != 'X':
+        grid[row][column] = 'X'
+
+def get_row_with_number(grid, number):
+    for row in range(len(grid)):
+        for column in range(len(grid[row])):
+            if grid[row][column] == number:
+                return row
+    return None
+
+def player1_turn(grid, player1_name, player1_score):
+    grid_size = len(grid)
+
+    row = int(input(f"{player1_name}, choose a row (0-{grid_size - 1}): "))
+
+    while not (0 <= row < grid_size):
+        print(f"Invalid row. Please choose a row within the valid range (0-{grid_size - 1}).")
+        row = int(input(f"{player1_name}, choose a row (0-{grid_size - 1}): "))
+
+    column = int(input(f"{player1_name}, choose a column (0-{grid_size - 1}): "))
+
+    while not (0 <= column < grid_size):
+        print(f"Invalid column. Please choose a column within the valid range (0-{grid_size - 1}).")
+        column = int(input(f"{player1_name}, choose a column (0-{grid_size - 1}): "))
+
+    selected_number = int(grid[row][column])
+    player1_score += selected_number
+
+    print(f"{player1_name} selected the number {selected_number}")
+    print(f"{player1_name}'s score: {player1_score}")
+
+    mark_number(grid, row, column)
+
+    for row in grid:
+        print('+------' * grid_size + '+')
+        print('|', end=' ')
+        for cell in row:
+            print(f'{cell:^4}', end=' | ')
+        print()
+    print('+------' * grid_size + '+')
+
+    return player1_score
+
+def player2_turn(grid, player2_name, player2_score):
+    grid_size = len(grid)
+
+    print(f"{player2_name}, choose a column (0-{grid_size - 1}): ")
+
+    column = int(input(f"{player2_name}, choose a column (0-{grid_size - 1}): "))
+
+    while not (0 <= column < grid_size):
+        print(f"Invalid column. Please choose a column within the valid range (0-{grid_size - 1}).")
+        column = int(input(f"{player2_name}, choose a column (0-{grid_size - 1}): "))
+
+    for row in range(grid_size):
+        if grid[row][column] != 'X':
+            selected_number = int(grid[row][column])
+            player2_score += selected_number
+
+            print(f"{player2_name} selected the number {selected_number}")
+            print(f"{player2_name}'s score: {player2_score}")
+
+            mark_number(grid, row, column)
+            break
+
+    return player2_score
+
+def is_game_over(grid):
+    grid_size = len(grid)
+
+    for row in range(grid_size):
+        row_complete = all(cell == 'X' for cell in grid[row])
+        if row_complete:
+            return True
+
+    for col in range(grid_size):
+        col_complete = all(grid[row][col] == 'X' for row in range(grid_size))
+        if col_complete:
+            return True
+
+    return False
+
 def start_game():
-    instruction = get_valid_input('Do you need instructions? Y / N: ', ['y','n'])
+    instruction = get_valid_input('Do you need instructions? Y / N: ', ['y', 'n'])
 
     if instruction == 'y':
         display_instructions()
 
-    question = get_valid_input('Do you want to start the game? Y / N: ', ['y','n'])
+    question = get_valid_input('Do you want to start the game? Y / N: ', ['y', 'n'])
 
     if question == 'y':
         grid_size = int(input('Enter the grid size you want: '))
@@ -52,21 +136,57 @@ def start_game():
         player1_name = input("Enter name for Player 1: ")
         player2_name = input("Enter name for Player 2: ")
 
-        for row in grid:
+        while True:
+            for row in grid:
+                print('+------' * grid_size + '+')
+                print('|', end=' ')
+                for cell in row:
+                    print(f'{cell:^4}', end=' | ')
+                print()
             print('+------' * grid_size + '+')
+
+            # Display player names and scores
+            display_scores(player1_name, player1_score, player2_name, player2_score)
+
+            player1_score = player1_turn(grid, player1_name, player1_score)
+
+            if is_game_over(grid):
+                break
+
+            for row in grid:
+                for i in range(len(row)):
+                    if row[i] == 'X':
+                        row[i] = 'X'
+
+            for row in grid:
+                print('+------' * grid_size + '+')
+                print('|', end=' ')
+                for cell in row:
+                    print(f'{cell:^4}', end=' | ')
+                print()
+            print('+------' * grid_size + '+')
+
+            player2_score = player2_turn(grid, player2_name, player2_score)
+
+            if is_game_over(grid):
+                break
+
+        for row in grid:
+            print('+------+------+------+------+')
             print('|', end=' ')
             for cell in row:
                 print(f'{cell:^4}', end=' | ')
             print()
+        print('+------+------+------+------+')
 
-        print('+------' * grid_size + '+')
+        if player1_score > player2_score:
+            print(f"{player1_name} wins!")
+        elif player2_score > player1_score:
+            print(f"{player2_name} wins!")
+        else:
+            print("It's a tie!")
 
-        # Display player names and initial scores
-        display_scores(player1_name, player1_score, player2_name, player2_score)
-    
-    else:
-        print('Game cancelled.')
-
+    print()
 
 # Start the game
 start_game()
