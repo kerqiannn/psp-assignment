@@ -30,7 +30,7 @@ def start_game():
     if question == 'Y':
         grid_size = int(input('Enter the grid size you want (2-8): '))
 
-        grid = [[' ' for _ in range(grid_size)] for _ in range(grid_size)]
+        grid = [[' ' for i in range(grid_size)] for i in range(grid_size)]
 
         for row in range(grid_size):
             for col in range(grid_size):
@@ -45,29 +45,18 @@ def start_game():
         player2_name = input("Enter name for Player 2: ")
 
         for row in grid:
-            print('+------' * (grid_size + 1) + '+')
-            print('|      ', end='')
+            print('+------' * grid_size + '+')
+            print('|', end=' ')
             for cell in row:
-                print(f'| {cell:^4}', end=' ')
-            print('|')
+                print(f'{cell:^4}', end=' | ')
+            print()
 
-        print('+------' * (grid_size + 1) + '+')
+        print('+------' * grid_size + '+')
 
         # Display player names and initial scores
         display_scores(player1_name, player1_score, player2_name, player2_score)
 
-        while True:
-            # Player 1's turn
-            row_choice = int(input(f"{player1_name}, choose a row: "))
-            col_choice = int(input(f"{player1_name}, choose a column: "))
+        # Game logic...
 
-            # Update score and mark selected cell with 'X'
-            player1_score += int(grid[row_choice - 1][col_choice - 1])
-            grid[row_choice - 1][col_choice - 1] = 'X'
-
-            # Display the updated grid
-            for row in grid:
-                print('+------' * (grid_size + 1) + '+')
-                print('|      ', end='')
-                for cell in row:
-                    print
+# Start the game
+start_game()
