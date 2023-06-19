@@ -19,15 +19,23 @@ def display_scores(player1_name, player1_score, player2_name, player2_score):
     print(f"{player1_name}'s Score: {player1_score}")
     print(f"{player2_name}'s Score: {player2_score}")
 
-def start_game():
-    instruction = input('Do you need instructions? Y / N: ')
+def get_valid_input(message, options):
+    while True:
+        user_input = input(message).lower()
+        if user_input in options:
+            return user_input
+        else:
+            print('Invalid input. Please enter Y or N.')
 
-    if instruction.lower() == 'y':
+def start_game():
+    instruction = get_valid_input('Do you need instructions? Y / N: ', ['y','n'])
+
+    if instruction == 'y':
         display_instructions()
 
-    question = input('Do you want to start the game? Y / N: ')
+    question = get_valid_input('Do you want to start the game? Y / N: ', ['y','n'])
 
-    if question.lower() == 'y':
+    if question == 'y':
         grid_size = int(input('Enter the grid size you want: '))
 
         grid = [[' ' for i in range(grid_size)] for i in range(grid_size)]
