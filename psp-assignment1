@@ -55,8 +55,11 @@ def start_game():
 
         # Display player names and initial scores
         display_scores(player1_name, player1_score, player2_name, player2_score)
+    
+    else:
+        print('Game cancelled.')
 
-        # Game logic...
 
 # Start the game
 start_game()
+
