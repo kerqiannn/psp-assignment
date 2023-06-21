@@ -154,13 +154,13 @@ def start_game():
 
         col_width = max(len(str(cell)) for row in grid for cell in row)
 
-        print('    ' + '------' * grid_size)
+        print(' ' + '------' * grid_size)
 
         for row in range(grid_size):
             print(f'{chr(97 + row)} |', end=' ')
             for col in range(grid_size):
                 print(f'{grid[row][col]:^{col_width}}', end=' | ')
-            print('\n    ' + '------' * grid_size)
+            print('\n ' + '------' * grid_size)
 
         # Initialize scores for Player 1 and Player 2
         player1_score = 0
@@ -202,18 +202,18 @@ def start_game():
             print(' ' * (col_width + 4), end='')
             for col in range(grid_size):
                 print(f'{col+1:^{col_width}}', end=' ')
-            print('\n' + '    -' * ((col_width + 3) * grid_size))
+            print('\n' + '-' * ((col_width + 3) * grid_size))
 
             for row in range(grid_size):
                 print(chr(97+row), end=' | ')
                 for col in range(grid_size):
                     print(f'{grid[row][col]:^{col_width}}', end=' | ')
-                print('\n' + '    -' * ((col_width + 3) * grid_size))
+                print('\n' + '-' * ((col_width + 3) * grid_size))
 
         for row in grid:
             print('+', end='')
             for _ in range(col_width + 3):
-                print('    -', end='')
+                print('-', end='')
             print('+', end='')
         print()
 
@@ -227,6 +227,8 @@ def start_game():
     print()
 
 start_game()
+
+
 
 
 
