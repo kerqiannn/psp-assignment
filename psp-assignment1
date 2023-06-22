@@ -137,6 +137,36 @@ def is_game_over(grid):
 
     return False
 
+def print_grid(grid_size, grid):
+    i = 1
+    a = 97
+    print("  ", end="")
+    for x in range(grid_size):
+        print(f" {i:^5}", end="")
+        i += 1
+    print(' ')
+    print("  ", end="")
+    print('-' * ((grid_size * 6) + 1))
+    for rows in grid:
+        print(f"{chr(a)} ", end="")
+        a += 1
+        for cols in rows:
+            print(f"|{cols:^5}", end="")
+        print("|")
+        print("  ", end='')
+        print('-' * ((grid_size * 6) + 1))
+
+def initialise_game(grid, grid_size):
+    p1 = 0
+    p2 = 0
+    random_rows = random.randint(0, grid_size - 1)
+    random_cols = random. randint(0, grid_size - 1)
+    p1 += grid[random_rows][random_cols] #把那个selected box放进分数
+    grid[random_rows][random_cols] = 'x'#才变x
+    return grid, p1, p2
+
+
+
 def start_game():
     global last_row
 
@@ -151,49 +181,33 @@ def start_game():
         grid_size = int(input('Enter the grid size you want: '))
 
         grid = [[random.randint(-30, 30) for _ in range(grid_size)] for _ in range(grid_size)]
-
         col_width = max(len(str(cell)) for row in grid for cell in row)
+        col, row = grid_size, grid_size
 
-        print(' ' + '------' * grid_size)
+        # print(' ' + '------' * grid_size)
 
-        for row in range(grid_size):
-            print(f'{chr(97 + row)} |', end=' ')
-            for col in range(grid_size):
-                print(f'{grid[row][col]:^{col_width}}', end=' | ')
-            print('\n ' + '------' * grid_size)
+        print_grid(grid_size, grid)
 
-        # Initialize scores for Player 1 and Player 2
-        player1_score = 0
-        player2_score = 0
-
-        # Get names of Player 1 and Player 2
         player1_name = input("Enter name for Player 1: ")
         player2_name = input("Enter name for Player 2: ")
+        grid, player1_score, player2_score = initialise_game(grid, grid_size)
+        print_grid(grid_size, grid)
 
-        # Initialize last_selected variable
+        # # Initialize last_selected variable
         last_row = None
         last_selected = 'column'
 
-        print(' ' * (col_width + 4), end='')
-        for col in range(grid_size):
-            print(f'{col+1:^{col_width}}', end=' ')
-        print('\n' + '-' * ((col_width + 3) * grid_size))
-
-        for row in range(grid_size):
-            print(chr(97+row), end=' | ')
-            for col in range(grid_size):
-                print(f'{grid[row][col]:^{col_width}}', end=' | ')
-            print('\n' + '-' * ((col_width + 3) * grid_size))
+        # print_grid(grid_size, grid)
 
         while True:
             # Display player names and scores
             display_scores(player1_name, player1_score, player2_name, player2_score)
 
             if last_selected == 'column':
-                row, player1_score = player1_turn(grid, player1_name, player1_score, last_selected)
+                row, player2_score = player2_turn(grid, player2_name, player2_score, last_selected)
                 last_selected = 'row'
             else:
-                player2_score = player2_turn(grid, player2_name, player2_score, last_row, grid_size, last_selected)
+                player1_score = player1_turn(grid, player1_name, player1_score, last_row, grid_size, last_selected)
                 last_selected = 'column'
 
             if is_game_over(grid):
@@ -202,13 +216,13 @@ def start_game():
             print(' ' * (col_width + 4), end='')
             for col in range(grid_size):
                 print(f'{col+1:^{col_width}}', end=' ')
-            print('\n' + '-' * ((col_width + 3) * grid_size))
+            print('\n' + '  -' * ((col_width + 3) * grid_size))
 
             for row in range(grid_size):
                 print(chr(97+row), end=' | ')
                 for col in range(grid_size):
                     print(f'{grid[row][col]:^{col_width}}', end=' | ')
-                print('\n' + '-' * ((col_width + 3) * grid_size))
+                print('\n' + '  -' * ((col_width + 3) * grid_size))
 
         for row in grid:
             print('+', end='')
@@ -227,9 +241,4 @@ def start_game():
     print()
 
 start_game()
-
-
-
-
-
 
