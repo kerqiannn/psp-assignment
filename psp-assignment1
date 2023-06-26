@@ -133,69 +133,80 @@ def initialise_game(grid, grid_size):
     grid[random_rows][random_cols] = 'x'#才变x
     return grid, p1, p2, random_cols
 
-
-
 def start_game():
-    global last_row
+    while True:
+        global last_row
 
-    instruction = get_valid_input('Do you need instructions? Y / N: ', ['y', 'n'])
+        instruction = get_valid_input('Do you need instructions? Y / N: ', ['y', 'n'])
 
-    if instruction == 'y':
-        display_instructions()
+        if instruction == 'y':
+            display_instructions()
 
-    question = get_valid_input('Do you want to start the game? Y / N: ', ['y', 'n'])
+        question = get_valid_input('Do you want to start the game? Y / N: ', ['y', 'n'])
 
-    if question == 'y':
-        grid_size = int(input('Enter the grid size you want: '))
+        if question == 'y':
+            grid_size = int(input('Enter the grid size you want: '))
 
-        grid = [[random.randint(-30, 30) for _ in range(grid_size)] for _ in range(grid_size)]
-        col_width = max(len(str(cell)) for row in grid for cell in row)
-        col, row = grid_size, grid_size
+            grid = [[random.randint(-30, 30) for _ in range(grid_size)] for _ in range(grid_size)]
+            col_width = max(len(str(cell)) for row in grid for cell in row)
+            col, row = grid_size, grid_size
 
-        # print(' ' + '------' * grid_size)
-
-        print_grid(grid_size, grid)
-
-        player1_name = input("Enter name for Player 1: ")
-        player2_name = input("Enter name for Player 2: ")
-        grid, player1_score, player2_score, fixed_column = initialise_game(grid, grid_size)
-        print_grid(grid_size, grid)
-
-        # # Initialize last_selected variable
-        last_selected = 'row'
-
-        # print_grid(grid_size, grid)
-
-        while True:
-            # Display player names and scores
-            display_scores(player1_name, player1_score, player2_name, player2_score)
-
-            if last_selected == 'column':
-                fixed_column, player1_score = player1_turn(grid, player1_name, player1_score, fixed_row, grid_size, last_selected)
-                last_selected = 'row'
-            else:
-                fixed_row, player2_score = player2_turn(grid, player2_name, player2_score, fixed_column, grid_size, last_selected)
-                last_selected = 'column'
-
-            if is_game_over(grid):
-                break
+            # print(' ' + '------' * grid_size)
 
             print_grid(grid_size, grid)
 
-        for row in grid:
-            print('+', end='')
-            for _ in range(col_width + 3):
-                print('-', end='')
-            print('+', end='')
+            player1_name = input("Enter name for Player 1: ")
+            player2_name = input("Enter name for Player 2: ")
+            grid, player1_score, player2_score, fixed_column = initialise_game(grid, grid_size)
+            print_grid(grid_size, grid)
+
+            # # Initialize last_selected variable
+            last_selected = 'row'
+
+            # print_grid(grid_size, grid)
+
+            while True:
+                # Display player names and scores
+                display_scores(player1_name, player1_score, player2_name, player2_score)
+
+                if last_selected == 'column':
+                    fixed_column, player1_score = player1_turn(grid, player1_name, player1_score, fixed_row, grid_size, last_selected)
+                    last_selected = 'row'
+                else:
+                    fixed_row, player2_score = player2_turn(grid, player2_name, player2_score, fixed_column, grid_size, last_selected)
+                    last_selected = 'column'
+
+                if is_game_over(grid):
+                    break
+
+                print_grid(grid_size, grid)
+
+            for row in grid:
+                print('+', end='')
+                for _ in range(col_width + 3):
+                    print('-', end='')
+                print('+', end='')
+            print()
+
+            if player1_score > player2_score:
+                print(f"{player1_name} wins!")
+            elif player2_score > player1_score:
+                print(f"{player2_name} wins!")
+            else:
+                print("It's a tie!")
+
         print()
 
-        if player1_score > player2_score:
-            print(f"{player1_name} wins!")
-        elif player2_score > player1_score:
-            print(f"{player2_name} wins!")
-        else:
-            print("It's a tie!")
+        if not play_again():
+            print('Thank you for playing!')
+            break
 
-    print()
+def play_again():
+    while True:
+        choice = get_valid_input('Do you want to play again? Y/N: ',['y','n'])
+        if choice == 'y':
+            return True
+        elif choice == 'n':
+            return False
 
 start_game()
