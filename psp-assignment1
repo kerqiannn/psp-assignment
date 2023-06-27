@@ -1,5 +1,19 @@
 import random
 
+def namename () :
+    print('--------------------------------------------------------------------')
+    print('Course : PSP0101 Problem Solving and Program Design')
+    print('Assignement : Crisscross')
+    print('Session : T2220')
+    print('Lab class code : TL1L')
+    print('Group : 2 ')
+    print('Name : Beh Ker Qian', 'Student ID : 1221105224')
+    print('Phone : 01116821020','Email : 1221105224@student.mmu.edu.my\n')
+    print('Group Leader : Yap Shen Yee')
+    print('Lab class code : TL1L')
+    print('Name : Yap Shen Yee', 'Student ID : 1221104548')
+    print('Phone : 0162897881','Email : 1221104548@student.mmu.edu.my')
+
 def display_instructions(): #displays the instructions
     print('1) You have to enter the size of the grid between 2-8.')
     print('   For example, if the size of the grid is 3:')
@@ -134,6 +148,9 @@ def initialise_game(grid, grid_size):
     return grid, p1, p2, random_cols
 
 def start_game():
+
+        namename()
+
     while True:
         global last_row
 
